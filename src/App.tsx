@@ -8,6 +8,7 @@ import Header from "./components/Header";
 import LoginPage from "./components/LoginPage";
 import ForgotPasswordPage from "./components/ForgotPasswordPage";
 import UpdatePasswordPage from "./components/UpdatePasswordPage";
+import { APP_CONFIG } from "./config/app";
 
 // Your main todos page component
 function TodosPage({ user }: { user: User | null }) {
@@ -94,7 +95,7 @@ function App() {
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/mirDB/#/`,
+        emailRedirectTo: APP_CONFIG.getRedirectUrl('/'),
       },
     });
     if (error) {
@@ -124,7 +125,7 @@ function App() {
   // Reset password
   const resetPassword = async (email: string) => {
     // todo: extract hard-coded basename 'mirDB' to a config or env variable
-    const redirectTo = window.location.origin + "/mirDB/#/update-password";
+    const redirectTo = APP_CONFIG.getRedirectUrl('/update-password');
     const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
       redirectTo: redirectTo,
     });
