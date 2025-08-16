@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 // import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // import toast from "react-hot-toast";
 import supabaseClient from "./utils/supabase";
@@ -93,6 +93,9 @@ function App() {
     const { error } = await supabaseClient.auth.signUp({
       email,
       password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/mirDB/#/`,
+      },
     });
     if (error) {
       console.error("Error signing up:", error.message);
