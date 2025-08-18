@@ -5,26 +5,13 @@ import "../index.css";
 
 import supabaseClient from "../utils/supabase";
 
-// Define the type for your character data
-// interface Character {
-//   id: number;
-//   name: string;
-//   honorific: string;
-//   first_appears: number;
-// }
+
 interface Character {
   id: number;
   name: string;
-  // russian_name: string;
-  honorifics: {
-    title: string | null;
-  } | null;
-  chapters: {
-    book_num: number;
-    //       ch_num: number;
-    //     }[]
-    //   | null;
-  } | null;
+  honorific: string | null;
+  book_num: number | null;
+  chapter: { book_num: number, ch_num: number } | null;
 }
 
 interface CharactersPageProps {
@@ -36,6 +23,8 @@ function CharactersPage(props: CharactersPageProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  // console.log("CharactersPage() starting; characters:", characters);
+
   useEffect(() => {
     fetchCharacters();
   }, []);
@@ -45,42 +34,34 @@ function CharactersPage(props: CharactersPageProps) {
       setLoading(true);
       setError(null);
 
-      // Fetch data from the characters table
-      // Replace 'name' and 'description' with your actual column names
-      // const { data, error } = await supabaseClient
-      //   .from('characters')
-      //   .select('id, name, honorific, first_appears'); // Select the columns you want
-
-      //     const { data, error } = await supabaseClient.from("characters").select(`
-      //         id,
-      //         name,
-      //         russian_name,
-      //         honorifics!honorific(title),
-      //         chapters!first_appears(book_num, ch_num)
-      // `);
-
       const { data, error } = await supabaseClient
         .from("characters")
-        .select("id, name, honorifics!honorific(title)")
-        .eq("id", 2);
+        .select(
+          `
+            id,
+            name,
+            honorifics!honorific(title),
+            chapters!first_appears(book_num, ch_num)
+          `
+        );
 
-      console.log("Returned Data:", data);
-      console.log("Error:", error);
-      console.log("typeof data?.[0]: ", typeof data?.[0]);
-
+      // console.log("Returned Data:", data);
+      // console.log("Error:", error);
+      
       if (error) {
         throw error;
       }
 
       setCharacters(
-        (data || []).map((item: any) => ({
-          id: item.id,
-          name: item.name,
-          honorifics: Array.isArray(item.honorifics)
-            ? item.honorifics[0] || null
-            : item.honorifics || null,
-          chapters: item.chapters || null,
-        }))
+        (data || []).map(
+          (item: any): Character => ({
+            id: item.id,
+            name: item.name,
+            honorific: item.honorifics?.title || null,
+            book_num: item.chapters?.book_num || null,
+            chapter: item.chapters || null,
+          })
+        )
       );
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
@@ -122,17 +103,13 @@ function CharactersPage(props: CharactersPageProps) {
 
               <p className="character-description">
                 honorific:&nbsp;
-                {character.honorifics ? character.honorifics.title : "none"}
-              </p>
+                {character.honorific ? character.honorific : "none"}
+              </p>              
               <p className="character-description">
                 first appears in book&nbsp;
-                {character.chapters ? character.chapters.book_num : "'unknown'"}
+                {character.chapter ? character.chapter.book_num : "'unknown'"},
+                chapter&nbsp;{character.chapter ? character.chapter.ch_num : "'unknown'"}
               </p>
-              {/* {character.chapters?.[0] && (
-                <p className="character-description">
-                  book {character.chapters[0].book_num}, chapter{" "}
-                  {character.chapters[0].ch_num}
-                </p> */}
             </div>
           ))}
         </div>
