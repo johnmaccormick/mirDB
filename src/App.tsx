@@ -4,52 +4,14 @@ import { HashRouter as Router, Routes, Route } from "react-router-dom";
 // import toast from "react-hot-toast";
 import supabaseClient from "./utils/supabase";
 import type { User } from "@supabase/supabase-js";
+import { APP_CONFIG } from "./config/app";
 import Header from "./components/Header";
 import LoginPage from "./components/LoginPage";
 import ForgotPasswordPage from "./components/ForgotPasswordPage";
 import UpdatePasswordPage from "./components/UpdatePasswordPage";
-import { APP_CONFIG } from "./config/app";
+import HomePage from "./components/HomePage";
+import CharactersPage from "./components/CharactersPage";
 
-// Your main todos page component
-function TodosPage({ user }: { user: User | null }) {
-  const [todos, setTodos] = useState<any[]>([]);
-
-  useEffect(() => {
-    async function getTodos() {
-      const { data: todos, error } = await supabaseClient
-        .from("todos")
-        .select();
-
-      if (error) {
-        console.error("Error fetching todos:", error);
-        return;
-      }
-
-      if (todos && todos.length > 0) {
-        setTodos(todos);
-      }
-    }
-
-    getTodos();
-  }, [user]);
-
-  return (
-    <div style={{ padding: "2rem" }}>
-      <h2>Your Todos</h2>
-      {todos.length === 0 ? (
-        <p>No todos found. Add some todos to your database!</p>
-      ) : (
-        <ul>
-          {todos.map((todo) => (
-            <li key={todo.id} style={{ marginBottom: "0.5rem" }}>
-              {todo.task}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -162,7 +124,8 @@ function App() {
         <Header user={user} signOut={signOut} />
         <main>
           <Routes>
-            <Route path="/" element={<TodosPage user={user} />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/characters" element={<CharactersPage />} />
             <Route
               path="/login"
               element={
