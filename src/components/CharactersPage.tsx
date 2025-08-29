@@ -37,11 +37,16 @@ function CharactersPage(props: CharactersPageProps) {
       const { data, error } = await supabaseClient
         .from("characters")
         .select(
+          // `
+          //   id,
+          //   name,
+          //   honorifics!honorific(title),
+          //   chapters!first_appears(book_num, ch_num)
+          // `
           `
             id,
             name,
-            honorifics!honorific(title),
-            chapters!first_appears(book_num, ch_num)
+            honorifics!honorific(title)
           `
         );
 
