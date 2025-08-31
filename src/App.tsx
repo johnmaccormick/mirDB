@@ -11,6 +11,7 @@ import ForgotPasswordPage from "./components/ForgotPasswordPage";
 import UpdatePasswordPage from "./components/UpdatePasswordPage";
 import HomePage from "./components/HomePage";
 import CharactersPage from "./components/CharactersPage";
+import ChaptersPage from "./components/ChaptersPage";
 
 
 function App() {
@@ -126,6 +127,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/characters" element={<CharactersPage />} />
+            <Route path="/chapters" element={<ChaptersPage />} />
             <Route
               path="/login"
               element={
@@ -148,4 +150,3 @@ function App() {
 }
 
 export default App;
-

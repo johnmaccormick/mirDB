@@ -21,12 +21,12 @@ function HomePage() {
 
           {/* Add more navigation cards as you build more pages */}
           <div className="nav-card">
-            <h2 className="nav-card-title">Items</h2>
+            <h2 className="nav-card-title">Chapters</h2>
             <p className="nav-card-description">
-              Manage inventory and item collections.
+              View info on each chapter in the novel.
             </p>
-            <Link to="/items" className="btn-link-primary">
-              View Items
+            <Link to="/chapters" className="btn-link-primary">
+              View Chapters
             </Link>
           </div>
 
