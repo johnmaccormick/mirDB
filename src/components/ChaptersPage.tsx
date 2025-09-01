@@ -11,6 +11,7 @@ interface Chapter {
   ors_book: number;
   ors_chapter: number;
   opening_line: string;
+  page_num: number | null;
 }
 
 interface ChaptersPageProps {
@@ -41,12 +42,13 @@ function ChaptersPage(props: ChaptersPageProps) {
             mse_chapter,
             ors_book,
             ors_chapter,
-            opening_line
+            opening_line,
+            page_num
           `
         )
-        .order('mse_book', { ascending: true })
-        .order('mse_part', { ascending: true })
-        .order('mse_chapter', { ascending: true });
+        .order("mse_book", { ascending: true })
+        .order("mse_part", { ascending: true })
+        .order("mse_chapter", { ascending: true });
 
       if (error) {
         throw error;
@@ -62,6 +64,7 @@ function ChaptersPage(props: ChaptersPageProps) {
             ors_book: item.ors_book,
             ors_chapter: item.ors_chapter,
             opening_line: item.opening_line,
+            page_num: item.page_num,
           })
         )
       );
@@ -100,11 +103,25 @@ function ChaptersPage(props: ChaptersPageProps) {
             <div key={chapter.id} className="chapter-card">
               <div className="chapter-header">
                 <h2 className="chapter-title">
-                  Book {chapter.mse_book}, Part {chapter.mse_part}, Chapter {chapter.mse_chapter}
+                  Book {chapter.mse_book}, Part {chapter.mse_part}, Chapter{" "}
+                  {chapter.mse_chapter}
                 </h2>
+                {/* <div className="page-number">
+                  <span className="page-label">page: {chapter.page_num ? chapter.page_num : "unknown"}</span>
+                </div>
                 <div className="chapter-reference">
                   <span className="reference-label">Original Russian:</span>
                   <span>Book {chapter.ors_book}, Chapter {chapter.ors_chapter}</span>
+                </div> */}
+                <div className="chapter-reference">
+                  <span className="page-label">
+                    page {chapter.page_num ? chapter.page_num : "unknown"}
+                  </span>
+                  <span className="separator"> | </span>
+                  <span className="reference-label">Original Russian:</span>
+                  <span>
+                    Book {chapter.ors_book}, Chapter {chapter.ors_chapter}
+                  </span>
                 </div>
               </div>
               <div className="opening-line">

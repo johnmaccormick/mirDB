@@ -53,6 +53,17 @@
   color: #555;
 }
 
+.page-label {
+  font-weight: 500;
+  color: #555;
+}
+
+.separator {
+  margin: 0 0.75rem;
+  color: #999; /* More muted */
+  font-weight: 300; /* Lighter weight if available */
+}
+
 .opening-line {
   margin-top: 1rem;
 }
