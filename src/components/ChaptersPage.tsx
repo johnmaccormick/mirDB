@@ -12,6 +12,8 @@ interface Chapter {
   ors_chapter: number;
   opening_line: string;
   page_num: number | null;
+  // short_summary: string | null;
+  // long_summary: string | null; 
 }
 
 interface ChaptersPageProps {
